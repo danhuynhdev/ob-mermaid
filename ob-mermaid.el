@@ -31,9 +31,10 @@
 ;;; Code:
 (require 'ob)
 (require 'ob-eval)
+(require 'org-attach)
 
 (defvar org-babel-default-header-args:mermaid
-  '((:results . "file") (:exports . "results"))
+  '((:results . "attachment") (:exports . "results"))
   "Default arguments for evaluatiing a mermaid source block.")
 
 (defcustom ob-mermaid-cli-path nil
@@ -78,6 +79,7 @@
       (error "Cannot find or execute %s, please check `ob-mermaid-cli-path'" mmdc))
     (with-temp-file temp-file (insert body))
     (message "%s" cmd)
+    (org-attach-attach-mv out-file)
     (org-babel-eval cmd "")
     nil))
 
